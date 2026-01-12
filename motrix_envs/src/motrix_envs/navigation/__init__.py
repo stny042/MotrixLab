@@ -13,4 +13,4 @@
 # limitations under the License.
 # ==============================================================================
 
-from . import basic, locomotion, manipulation, navigation  # noqa: F401
+from . import anymal_c  # noqa: F401 register envs

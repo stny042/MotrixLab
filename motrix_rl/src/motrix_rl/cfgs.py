@@ -276,6 +276,7 @@ class manipulation:
 
 class navigation:
     @rlcfg("anymal_c_navigation_flat")
+    @rlcfg("anymal_c_navigation_flat_mine")  # 同时支持自定义环境
     @dataclass
     class AnymalCPPOConfig(PPOCfg):
         # ===== Basic Training Parameters =====
