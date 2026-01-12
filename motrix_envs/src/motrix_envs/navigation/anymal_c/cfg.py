@@ -74,36 +74,32 @@ class InitState:
     定义机器人在每个episode开始时的初始姿态
     """
     # 机器人在世界坐标系中的初始位置 [x, y, z]
-    # z=0.12m 是趴着时机身离地高度
+    # # 站立姿态：z=0.5m
+    # pos = [0.0, 0.0, 0.5]
+    # 趴着姿态：z=0.12m
     pos = [0.0, 0.0, 0.12]
 
     # 位置随机化范围 [x_min, y_min, x_max, y_max]
     # 机器人会在 20m × 20m 的区域内随机生成初始位置
     pos_randomization_range = [-10.0, -10.0, 10.0, 10.0]
 
-    # 各关节的默认角度（趴着姿态）
+    # 各关节的默认角度
     # 关节命名规则：
     #   - LF/RF/LH/RH = 左前/右前/左后/右后
     #   - HAA = Hip Abduction/Adduction (髋关节外展/内收)
     #   - HFE = Hip Flexion/Extension (髋关节屈/伸)
     #   - KFE = Knee Flexion/Extension (膝关节屈/伸)
+    # # 站立姿态的关节角度：
+    # default_joint_angles = {
+    #     "LF_HAA": 0.0, "RF_HAA": 0.0, "LH_HAA": 0.0, "RH_HAA": 0.0,
+    #     "LF_HFE": 0.4, "RF_HFE": 0.4, "LH_HFE": -0.4, "RH_HFE": -0.4,
+    #     "LF_KFE": -0.8, "RF_KFE": -0.8, "LH_KFE": 0.8, "RH_KFE": 0.8,
+    # }
+    # 趴着姿态的关节角度：
     default_joint_angles = {
-        # 四个髋关节外展角度（稍微向外张开，让腿有空间折叠）
-        "LF_HAA": -0.2,   # 左前髋外展 [rad]
-        "RF_HAA": 0.2,    # 右前髋外展 [rad]
-        "LH_HAA": -0.2,   # 左后髋外展 [rad]
-        "RH_HAA": 0.2,    # 右后髋外展 [rad]
-        # 四个髋关节屈伸角度（大腿完全折叠贴近身体）
-        # 前腿向前折叠，后腿向后折叠
-        "LF_HFE": 1.2,    # 左前髋屈伸 [rad] ≈ 69°
-        "RF_HFE": 1.2,    # 右前髋屈伸 [rad]
-        "LH_HFE": -1.2,   # 左后髋屈伸 [rad]
-        "RH_HFE": -1.2,   # 右后髋屈伸 [rad]
-        # 四个膝关节角度（小腿完全折叠）
-        "LF_KFE": -2.4,   # 左前膝关节 [rad] ≈ -137°
-        "RF_KFE": -2.4,   # 右前膝关节 [rad]
-        "LH_KFE": 2.4,    # 左后膝关节 [rad]
-        "RH_KFE": 2.4,    # 右后膝关节 [rad]
+        "LF_HAA": -0.2, "RF_HAA": 0.2, "LH_HAA": -0.2, "RH_HAA": 0.2,
+        "LF_HFE": 1.2, "RF_HFE": 1.2, "LH_HFE": -1.2, "RH_HFE": -1.2,
+        "LF_KFE": -2.4, "RF_KFE": -2.4, "LH_KFE": 2.4, "RH_KFE": 2.4,
     }
 
 
@@ -189,7 +185,8 @@ class AnymalCEnvCfg(EnvCfg):
     """
     model_file: str = model_file          # MuJoCo 模型文件路径
     reset_noise_scale: float = 0.01       # 重置时的状态噪声缩放
-    max_episode_seconds: float = 10.0     # 每个episode最长时间 [秒]（延长到10秒）
+    # max_episode_seconds: float = 7.0    # 站立姿态用7秒
+    max_episode_seconds: float = 10.0     # 趴着姿态用10秒
     sim_dt: float = 0.01                  # 仿真时间步长 [秒]（100Hz）
     ctrl_dt: float = 0.01                 # 控制时间步长 [秒]（与仿真同步）
     reset_yaw_scale: float = 0.1          # 重置时朝向随机化缩放
